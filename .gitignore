@@ -1,0 +1,10 @@
+.vscode
+.DS_Store
+pgdata/*
+env.sh
+bin/*
+sycamore
+mocki2c
+test.db
+tests/tests
+private-key.pem

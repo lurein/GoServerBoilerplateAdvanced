@@ -1,0 +1,149 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "Whimsy API specification",
+    "title": "Whimsy APIs",
+    "version": "1.0.0"
+  },
+  "paths": {},
+  "definitions": {
+    "BadRequest": {
+      "description": "Describes violations in a client request. This error type focuses on the\nsyntactic aspects of the request.",
+      "type": "object",
+      "properties": {
+        "fieldViolations": {
+          "description": "Describes all violations in a client request.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/FieldViolation"
+          },
+          "x-go-name": "FieldViolations"
+        }
+      },
+      "x-go-package": "whimsy/pkg/errors"
+    },
+    "ErrorInfo": {
+      "type": "object",
+      "title": "Describes the cause of the error with structured details.",
+      "properties": {
+        "Metadata": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "Reason": {
+          "description": "The reason of the error. This is a constant value that identifies the\nproximate cause of the error.\nThis should be at most 63 characters and match /[A-Z0-9_]+/.\nUNKNOWN ReasonUnknown\nOUTDATED_VERSION ReasonOutdatedVersion",
+          "type": "string",
+          "enum": [
+            "UNKNOWN",
+            "OUTDATED_VERSION"
+          ],
+          "x-go-enum-desc": "UNKNOWN ReasonUnknown\nOUTDATED_VERSION ReasonOutdatedVersion"
+        }
+      },
+      "x-go-package": "whimsy/pkg/errors"
+    },
+    "FieldViolation": {
+      "type": "object",
+      "title": "A message type used to describe a single bad request field.",
+      "properties": {
+        "description": {
+          "description": "A description of why the request element is bad.",
+          "type": "string",
+          "x-go-name": "Description"
+        },
+        "field": {
+          "description": "A path leading to a field in the request body. The value will be a\nsequence of dot-separated identifiers that identify a mesasge field.\nE.g., \"fieldViolations.field\" would identify this field.",
+          "type": "string",
+          "x-go-name": "Field"
+        }
+      },
+      "x-go-package": "whimsy/pkg/errors"
+    },
+    "LocalizedMessage": {
+      "description": "Provides a localized error message that is safe to return to the user\nwhich can be attached to an RPC error.",
+      "type": "object",
+      "properties": {
+        "locale": {
+          "description": "The locale used following the specification defined at\nhttp://www.rfc-editor.org/rfc/bcp/bcp47.txt.\nExamples are: \"en-US\", \"fr-CH\", \"es-MX\"",
+          "type": "string",
+          "x-go-name": "Locale"
+        },
+        "message": {
+          "description": "The localized error message in the above locale.",
+          "type": "string",
+          "x-go-name": "Message"
+        }
+      },
+      "x-go-package": "whimsy/pkg/errors"
+    },
+    "RequestInfo": {
+      "description": "Contains metadata about the request that clients can attach when filing a bug\nor providing other forms of feedback.",
+      "type": "object",
+      "properties": {
+        "requestID": {
+          "description": "An opaque string that should only be interpreted by the service generating\nit. For example, it can be used to identify requests in the service's logs.",
+          "type": "string",
+          "x-go-name": "RequestID"
+        },
+        "servingData": {
+          "description": "Any data that was used to serve this request. For example, an encrypted\nstack trace that can be sent back to the service provider for debugging.",
+          "type": "string",
+          "x-go-name": "ServingData"
+        }
+      },
+      "x-go-package": "whimsy/pkg/errors"
+    },
+    "WhimsyError": {
+      "description": "Error default error structure",
+      "type": "object",
+      "required": [
+        "msg"
+      ],
+      "properties": {
+        "badRequest": {
+          "$ref": "#/definitions/BadRequest"
+        },
+        "code": {
+          "type": "integer",
+          "format": "int64",
+          "x-go-name": "HTTPStatus"
+        },
+        "errorInfo": {
+          "$ref": "#/definitions/ErrorInfo"
+        },
+        "fieldErrors": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "x-go-name": "FieldErrors"
+        },
+        "localizedMessage": {
+          "$ref": "#/definitions/LocalizedMessage"
+        },
+        "msg": {
+          "type": "string",
+          "x-go-name": "Msg"
+        },
+        "requestInfo": {
+          "$ref": "#/definitions/RequestInfo"
+        }
+      },
+      "x-go-name": "Error",
+      "x-go-package": "whimsy/pkg/errors"
+    },
+    "Decimal": {
+      "type": "string"
+    }
+  },
+  "responses": {
+    "WhimsyErrorResponse": {
+      "description": "WhimsyErrorResponse swagger object",
+      "schema": {
+        "$ref": "#/definitions/WhimsyError"
+      }
+    }
+  }
+}
