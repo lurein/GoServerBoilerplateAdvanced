@@ -30,7 +30,7 @@ func HealthCheck(w http.ResponseWriter, _ *http.Request) {
 }
 
 func Welcome(w http.ResponseWriter, _ *http.Request) {
-	utils.Respond(w, utils.Message(true, "Welcome to Sycamore"))
+	utils.Respond(w, utils.Message(true, "Welcome to Whimsy"))
 }
 
 func NotFoundHandler(w http.ResponseWriter, _ *http.Request) {
